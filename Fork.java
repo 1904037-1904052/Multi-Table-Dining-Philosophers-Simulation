@@ -1,10 +1,17 @@
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.TimeUnit;
 
 class Fork {
     private final ReentrantLock lock = new ReentrantLock();
-    
+
     public boolean pickUp() {
-        return lock.tryLock();
+        try {
+            return lock.tryLock(500, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
     
     public void putDown() {

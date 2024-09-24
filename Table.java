@@ -1,40 +1,73 @@
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.Date;
+import java.util.Random;
+import java.util.List;
 
 
 class Table {
-    private Philosopher[] philosophers;
-    
-    public Table(Philosopher[] philosophers) {
-        this.philosophers = philosophers;
+    private List<Philosopher> philosophers;
+    private int NUM_PHILOSOPHERS = 5;
+    private int id;
+
+    public Table(int NUM_PHILOSOPHERS, int id) {
+        this.NUM_PHILOSOPHERS = NUM_PHILOSOPHERS;
+        this.id = id;
     }
-    
-    public synchronized void checkForDeadlock() {
-        boolean allHungry = true;
-        
-        // Check if all philosophers are in the HUNGRY state
+
+    public void addPhilosopher(Philosopher philosopher) {
+        philosophers.add(philosopher);
+    }
+
+    public void startDinner() {
         for (Philosopher philosopher : philosophers) {
-            if (philosopher.getState() != PhilosopherState.HUNGRY) {
-                allHungry = false;
+            philosopher.run();
+        }
+
+        while (true) {
+            if (detectDeadlock()) {
+                handleDeadlock();
                 break;
             }
+
+            try {
+                Thread.sleep(1000);  // Check for deadlock every second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        
-        // If all are hungry, check if none of them are eating (implying deadlock)
-        if (allHungry) {
-            System.out.println("Deadlock detected at this table!");
-            // Handle deadlock resolution (e.g., move a philosopher to the 6th table)
-            resolveDeadlock();
+    }
+
+    private void stopDinner() {
+        for (Philosopher philosopher : philosophers) {
+            philosopher.interrupt();
+            try {
+                philosopher.join();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace(); 
+                System.out.println("FFFFFFFFFF" + philosopher.getId());
+            }
         }
     }
     
-    private void resolveDeadlock() {
-        // Pick a random philosopher to move to the 6th table
-        int randomIndex = ThreadLocalRandom.current().nextInt(0, philosophers.length);
-        Philosopher philosopherToMove = philosophers[randomIndex];
-        
-        System.out.println("Philosopher " + philosopherToMove.getId() + " is moving to the 6th table.");
-        
-        // Move the philosopher to the 6th table and reassign them accordingly
-        // ...
+    protected synchronized boolean detectDeadlock() {
+        // Check if all philosophers are in the HUNGRY (waiting) state
+        for (Philosopher philosopher : philosophers) {
+            if (!philosopher.hasLeftFork() || philosopher.getPhilosopherState() != Philosopher.PhilosopherState.HUNGRY) {
+                return false;  // Not all philosophers are waiting, no deadlock
+            }
+        }
+        return true;  // All philosophers are waiting: deadlock!
+    }
+    
+    protected Philosopher handleDeadlock() {
+        System.out.println("Deadlock detected at " + new Date());
+
+        // Remove a random philosopher from the table to resolve deadlock
+        int philosopherToRemove = new Random().nextInt(NUM_PHILOSOPHERS);
+        Philosopher philosopher = philosophers.get(philosopherToRemove);
+        philosopher.interrupt();
+        System.out.println("In table-" + id + ", Philosopher " + philosopherToRemove + " is removed from the table.");
+        return philosopher;
     }
 }
