@@ -8,7 +8,7 @@ class Philosopher extends Thread {
         EATING
     }
     
-    private String label;
+    private char label;
     private int id;
     private PhilosopherState state;
     private Fork leftFork, rightFork;
@@ -16,12 +16,13 @@ class Philosopher extends Thread {
     private Table table;  // Reference to the table for deadlock detection
     private Random random;
     
-    public Philosopher(int id, Fork leftFork, Fork rightFork, Table table) {
+    public Philosopher(int id, Fork leftFork, Fork rightFork, Table table, char label) {
         this.id = id;
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.state = PhilosopherState.THINKING;
         this.table = table;
+        this.label = label;
     }
     
     public void run() {
@@ -30,22 +31,22 @@ class Philosopher extends Thread {
                 think();
 
                 state = PhilosopherState.HUNGRY;
-                System.out.println("Philosopher " + id + " is hungry, trying to pick up left chopstick.");
+                System.out.println("Philosopher " + label + " is hungry, trying to pick up left chopstick.");
 
                 // Try to acquire the left chopstick
                 while (!leftFork.pickUp()) {
-                    System.out.println("Philosopher " + id + " is waiting for the left chopstick.");
+                    System.out.println("Philosopher " + label + " is waiting for the left chopstick.");
                 }
 
                 hasLeftFork = true;
 
                 try {
-                    System.out.println("Philosopher " + id + " picked up left chopstick, waiting for 4 seconds.");
+                    System.out.println("Philosopher " + label + " picked up left chopstick, waiting for 4 seconds.");
                     Thread.sleep(4000); 
 
                     // Try to acquire the right chopstick
                     while (!rightFork.pickUp()) {
-                        System.out.println("Philosopher " + id + " is waiting for the right chopstick.");
+                        System.out.println("Philosopher " + label + " is waiting for the right chopstick.");
                     }
 
                     try {
@@ -68,7 +69,7 @@ class Philosopher extends Thread {
     
     private void think() throws InterruptedException {
         state = PhilosopherState.THINKING;
-        System.out.println("Philosopher " + id + " is thinking.");
+        System.out.println("Philosopher " + label + " is thinking.");
         Thread.sleep(ThreadLocalRandom.current().nextInt(0, 10000));  // Think for 0-10 seconds
     }
     
@@ -90,7 +91,7 @@ class Philosopher extends Thread {
         return id;
     }
 
-    public String getLabel() {
+    public char getLabel() {
         return label;
     }
 }
