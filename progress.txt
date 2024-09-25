@@ -1,0 +1,3 @@
+ should I continously check all 5 tables or after a fixed time ?
+check sixth table deadlock check
+check all 5 table deadlock check continously
