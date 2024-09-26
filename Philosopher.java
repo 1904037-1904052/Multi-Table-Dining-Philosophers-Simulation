@@ -13,15 +13,13 @@ class Philosopher extends Thread {
     private PhilosopherState state;
     private Fork leftFork, rightFork;
     private boolean hasLeftFork;
-    private Table table;  // Reference to the table for deadlock detection
-    private Random random;
+    private Random random = new Random();
     
     public Philosopher(int id, Fork leftFork, Fork rightFork, Table table, char label) {
         this.id = id;
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.state = PhilosopherState.THINKING;
-        this.table = table;
         this.label = label;
     }
     
@@ -31,26 +29,28 @@ class Philosopher extends Thread {
                 think();
 
                 state = PhilosopherState.HUNGRY;
-                System.out.println("Philosopher " + label + " is hungry, trying to pick up left chopstick.");
+                // System.out.println("Philosopher " + label + " is hungry, trying to pick up left chopstick.");
 
                 // Try to acquire the left chopstick
-                while (!leftFork.pickUp()) {
-                    System.out.println("Philosopher " + label + " is waiting for the left chopstick.");
+                while (!leftFork.pickUp(label, 0)) {
+                    // System.out.println("Philosopher " + label + " is waiting for the left chopstick.");
+                    Thread.sleep(500);  
                 }
 
                 hasLeftFork = true;
 
                 try {
-                    System.out.println("Philosopher " + label + " picked up left chopstick, waiting for 4 seconds.");
+                    // System.out.println("Philosopher " + label + " picked up left chopstick, waiting for 4 seconds.");
                     Thread.sleep(4000); 
 
                     // Try to acquire the right chopstick
-                    while (!rightFork.pickUp()) {
-                        System.out.println("Philosopher " + label + " is waiting for the right chopstick.");
+                    while (!rightFork.pickUp(label, 1)) {
+                        // System.out.println("Philosopher " + label + " is waiting for the right chopstick.");
+                        Thread.sleep(500);  
                     }
 
                     try {
-                        eat();  // Successfully picked up both chopsticks, now eat
+                        eat();  
                     } finally {
                         rightFork.putDown();
                     }
@@ -69,13 +69,13 @@ class Philosopher extends Thread {
     
     private void think() throws InterruptedException {
         state = PhilosopherState.THINKING;
-        System.out.println("Philosopher " + label + " is thinking.");
+        // System.out.println("Philosopher " + label + " is thinking.");
         Thread.sleep(ThreadLocalRandom.current().nextInt(0, 10000));  // Think for 0-10 seconds
     }
     
     private void eat() throws InterruptedException {
         state = PhilosopherState.EATING;
-        System.out.println("Philosopher " + id + " is eating.");
+        // System.out.println("Philosopher " + id + " is eating.");
         Thread.sleep(ThreadLocalRandom.current().nextInt(0, 5000));  // Eat for 0-5 seconds
     }
 

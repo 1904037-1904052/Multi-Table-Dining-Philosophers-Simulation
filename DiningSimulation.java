@@ -1,6 +1,3 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -13,7 +10,7 @@ class DiningSimulation {
     private List<Table> tables;
     private Table sixthTable;
     private ExecutorService deadlockChecker;
-    private char currentPhilosopherLabel = 'A';  // Label starting from 'A'
+    private char currentPhilosopherLabel = 'A';  
     
     public DiningSimulation() {
         tables = new ArrayList<>();
@@ -42,6 +39,7 @@ class DiningSimulation {
     }
 
     public void start() {
+        System.out.println("Simulation starts at : " + new Date());
         for (Table table : tables) {
             table.startDinner();
         }
@@ -53,38 +51,20 @@ class DiningSimulation {
         }
 
         // Monitor the sixth table for deadlock
-        deadlockChecker.submit(this::monitorSixthTableForDeadlock);
-
-        // while (true) {
-        //     for (int i = 0; i < tables.size() - 1; i++) {
-        //         Table table = tables.get(i);
-        //         if (table.detectDeadlock()) {
-        //             Philosopher philosopher = table.handleDeadlock();
-        //             sixthTable.addPhilosopher(philosopher);
-        //             if (sixthTable.detectDeadlock()) {
-        //                 System.out.println("Deadlock at the sixth table! Last philosopher to move: " + philosopher.getLabel());
-        //                 return;
-        //             }
-        //         }
-        //     }
-        //     try {
-        //         Thread.sleep(1000);  // Check for deadlocks every second
-        //     } catch (InterruptedException e) {
-        //         e.printStackTrace();
-        //     }
-        // }
+        deadlockChecker.submit(() -> monitorSixthTableForDeadlock(tables.get(NUM_TABLES - 1)));
     }
 
     private void monitorTableForDeadlock(Table table) {
         while (true) {
             if (table.detectDeadlock()) {
+                System.out.println("Deadlock detected at " + new Date());
                 Philosopher movedPhilosopher = table.handleDeadlock();
                 
                 // Find a random available seat at the sixth table
                 Table sixthTable = tables.get(NUM_TABLES - 1);
                 synchronized (sixthTable) {
-                    sixthTable.addPhilosopherToRandomSeat(movedPhilosopher);
-                    movedPhilosopher.run();
+                    int index = sixthTable.addPhilosopherToRandomSeat(movedPhilosopher);
+                    sixthTable.startPhilosopherAtIndex(index);
                 }
                 break;
             }
@@ -97,20 +77,20 @@ class DiningSimulation {
         }
     }
 
-    private void monitorSixthTableForDeadlock() {
-        Table sixthTable = tables.get(NUM_TABLES - 1);
+    private void monitorSixthTableForDeadlock(Table sixthTable) {
         while (true) {
             if (sixthTable.detectDeadlock()) {
-                System.out.println("Sixth table is deadlocked!");
+                System.out.println("In sixth table, Deadlock detected at " + new Date());
                 // Output the philosopher who last moved to the sixth table
                 Philosopher lastPhilosopher = sixthTable.getLastMovedPhilosopher();
                 System.out.println("Last philosopher to move to the sixth table: " + lastPhilosopher.getLabel());
-                sixthTable.startDinner(); // stop all philosopher 
+                sixthTable.stopDinner(); // stop all philosopher 
                 break;  // Stop the simulation
             }
             try {
                 Thread.sleep(1000);  // Check for deadlock every second
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 break;
             }
         }

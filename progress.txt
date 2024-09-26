@@ -1,3 +1,5 @@
  should I continously check all 5 tables or after a fixed time ?
 check sixth table deadlock check
 check all 5 table deadlock check continously
+Randomly remove korio, removing it for now because of debugging
+Deadlock 6th table e check hocce nh maybe :3
