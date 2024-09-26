@@ -1,18 +1,39 @@
-Deadlock detected at Thu Sep 26 21:52:44 BDT 2024
-Deadlock detected at Thu Sep 26 21:52:45 BDT 2024
-In table-0, Philosopher C is removed from the table.
-In table-4, Philosopher X is removed from the table.
-Philosopher C moved to seat 0 at the sixth table.
-Philosopher X moved to seat 1 at the sixth table.
-Deadlock detected at Thu Sep 26 21:53:04 BDT 2024
-In table-2, Philosopher N is removed from the table.
-Philosopher N moved to seat 2 at the sixth table.
-Deadlock detected at Thu Sep 26 21:54:55 BDT 2024
-In table-1, Philosopher G is removed from the table.
-Philosopher G moved to seat 3 at the sixth table.
-Deadlock detected at Thu Sep 26 21:56:24 BDT 2024
-In table-3, Philosopher T is removed from the table.
+Simulation starts at : Fri Sep 27 00:55:00 BDT 2024
+
+In table-2, Deadlock detected at Fri Sep 27 00:55:10 BDT 2024
+
+Philosopher O is removed from the table-2.
+
+Philosopher O moved to seat 2 at the sixth table.
+
+In table-3, Deadlock detected at Fri Sep 27 00:56:49 BDT 2024
+
+Philosopher T is removed from the table-3.
+
 Philosopher T moved to seat 4 at the sixth table.
-Sixth table is deadlocked!
-In sixth table, Deadlock detected at Thu Sep 26 21:58:53 BDT 2024
-Last philosopher to move to the sixth table: T
+
+In table-4, Deadlock detected at Fri Sep 27 00:59:49 BDT 2024
+
+Philosopher X is removed from the table-4.
+
+Philosopher X moved to seat 3 at the sixth table.
+
+In table-1, Deadlock detected at Fri Sep 27 01:02:24 BDT 2024
+
+Philosopher I is removed from the table-1.
+
+Philosopher I moved to seat 1 at the sixth table.
+
+In table-0, Deadlock detected at Fri Sep 27 01:02:36 BDT 2024
+
+Philosopher D is removed from the table-0.
+
+Philosopher D moved to seat 0 at the sixth table.
+
+In table-6, Deadlock detected at Fri Sep 27 01:04:32 BDT 2024
+
+In sixth table, Deadlock detected at Fri Sep 27 01:04:32 BDT 2024
+
+Simulation ends after 572656 milliseconds.
+
+Last philosopher to move to the sixth table: D

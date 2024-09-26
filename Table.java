@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 
@@ -29,16 +32,18 @@ class Table {
     }
 
     public synchronized int addPhilosopherToRandomSeat(Philosopher philosopher) {
-        Random random = new Random();
-        int seatIndex = 0;
+        List<Integer> nullIndexes = new ArrayList<>();
 
-        for(int i = 0; i < NUM_PHILOSOPHERS; i++) {
-            if(philosophers[i] != null) continue;
-            seatIndex = i; break;
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
+            if (philosophers[i] == null) {
+                nullIndexes.add(i);
+            }
         }
+        Random random = new Random();
+        int seatIndex = nullIndexes.get(random.nextInt(nullIndexes.size()));
 
         addPhilosopher(philosopher, seatIndex);
-        System.out.println("Philosopher " + philosopher.getLabel() + " moved to seat " + seatIndex + " at the sixth table.");
+        System.out.println("Philosopher " + philosopher.getLabel() + " moved to seat " + seatIndex + " at the sixth table.\n");
         return seatIndex;
     }
 
@@ -110,6 +115,7 @@ class Table {
         }
 
         if(activePhiosopher != 5) return false;
+        System.out.println("In table-" + id + ", Deadlock detected at " + new Date() + '\n');
         return true;  // All philosophers are waiting: deadlock!
     }
     
@@ -124,7 +130,7 @@ class Table {
         Philosopher philosopher = philosophers[index];
         stopDinner();
         philosophers[index] = null;  // Remove the philosopher from the current table
-        System.out.println("In table-" + id + ", Philosopher " + philosopher.getLabel() + " is removed from the table.");
+        System.out.println("Philosopher " + philosopher.getLabel() + " is removed from the table-" + id +".\n");
         return philosopher;
     }
 }

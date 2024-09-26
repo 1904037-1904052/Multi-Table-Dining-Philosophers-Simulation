@@ -11,6 +11,7 @@ class DiningSimulation {
     private Table sixthTable;
     private ExecutorService deadlockChecker;
     private char currentPhilosopherLabel = 'A';  
+    private Date startTime, EndTime;
     
     public DiningSimulation() {
         tables = new ArrayList<>();
@@ -39,7 +40,8 @@ class DiningSimulation {
     }
 
     public void start() {
-        System.out.println("Simulation starts at : " + new Date());
+        startTime = new Date();
+        System.out.println("Simulation starts at : " + startTime + '\n');
         for (Table table : tables) {
             table.startDinner();
         }
@@ -57,7 +59,6 @@ class DiningSimulation {
     private void monitorTableForDeadlock(Table table) {
         while (true) {
             if (table.detectDeadlock()) {
-                System.out.println("Deadlock detected at " + new Date());
                 Philosopher movedPhilosopher = table.handleDeadlock();
                 
                 // Find a random available seat at the sixth table
@@ -80,8 +81,10 @@ class DiningSimulation {
     private void monitorSixthTableForDeadlock(Table sixthTable) {
         while (true) {
             if (sixthTable.detectDeadlock()) {
-                System.out.println("In sixth table, Deadlock detected at " + new Date());
+                EndTime = new Date();
+                System.out.println("In sixth table, Deadlock detected at " + EndTime + '\n');
                 // Output the philosopher who last moved to the sixth table
+                System.out.println("Simulation ends after " + (EndTime.getTime() - startTime.getTime()) + " milliseconds.\n");
                 Philosopher lastPhilosopher = sixthTable.getLastMovedPhilosopher();
                 System.out.println("Last philosopher to move to the sixth table: " + lastPhilosopher.getLabel());
                 sixthTable.stopDinner(); // stop all philosopher 
