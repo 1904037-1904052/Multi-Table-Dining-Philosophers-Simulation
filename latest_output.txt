@@ -1,0 +1,18 @@
+Deadlock detected at Thu Sep 26 21:52:44 BDT 2024
+Deadlock detected at Thu Sep 26 21:52:45 BDT 2024
+In table-0, Philosopher C is removed from the table.
+In table-4, Philosopher X is removed from the table.
+Philosopher C moved to seat 0 at the sixth table.
+Philosopher X moved to seat 1 at the sixth table.
+Deadlock detected at Thu Sep 26 21:53:04 BDT 2024
+In table-2, Philosopher N is removed from the table.
+Philosopher N moved to seat 2 at the sixth table.
+Deadlock detected at Thu Sep 26 21:54:55 BDT 2024
+In table-1, Philosopher G is removed from the table.
+Philosopher G moved to seat 3 at the sixth table.
+Deadlock detected at Thu Sep 26 21:56:24 BDT 2024
+In table-3, Philosopher T is removed from the table.
+Philosopher T moved to seat 4 at the sixth table.
+Sixth table is deadlocked!
+In sixth table, Deadlock detected at Thu Sep 26 21:58:53 BDT 2024
+Last philosopher to move to the sixth table: T
