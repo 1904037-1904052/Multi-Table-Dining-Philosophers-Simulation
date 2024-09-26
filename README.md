@@ -1,4 +1,8 @@
 # Dining Philosophers Problem Simulation
+![Built with Java](https://img.shields.io/badge/Built%20with-Java-orange)
+![Multi-threaded](https://img.shields.io/badge/Multi--threaded-Yes-brightgreen)
+![Simulation](https://img.shields.io/badge/Simulation-Dining%20Philosophers-9cf)
+![Last Updated](https://img.shields.io/badge/Last%20Updated-Sep%202024-lightgrey)
 
 This repository contains a multi-table extension of the classical Dining Philosophers problem, implemented using threads. The simulation demonstrates how philosophers interact with forks, and how deadlocks are avoided by moving philosophers between tables. The goal is to simulate the protocol and track the time it takes for the sixth table to enter a deadlocked state.
 
@@ -51,7 +55,7 @@ To run the simulation, follow these steps:
 
 Clone the repository:
    ```bash
-   git clone https://github.com/your-username/dining-philosophers-simulation.git
+   git clone https://github.com/1904037-1904052/Multi-Table-Dining-Philosophers-Simulation.git
    ```
 **Compiling** :
    To compile all the Java files, navigate to the root directory of the repository and run the following command:
